@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "storybook": "npx nx storybook storybook-storybook-app"
+    "storybook": "npx nx storybook storybook-storybook-app",
+    "secrets": "bash scripts/secrets.sh ngrx-research_secrets"
   },
   "private": true,
   "dependencies": {

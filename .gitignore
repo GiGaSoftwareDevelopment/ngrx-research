@@ -39,3 +39,5 @@ testem.log
 Thumbs.db
 
 .angular
+/libs/shared/secrets/src/lib/
+/libs/shared/secrets/src/index.ts

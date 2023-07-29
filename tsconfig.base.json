@@ -26,7 +26,8 @@
       "@ngrx-research/shared/ui-common": ["libs/shared/ui-common/src/index.ts"],
       "@ngrx-research/shared/ui-design-library": [
         "libs/shared/ui-design-library/src/index.ts"
-      ]
+      ],
+      "@secrets": ["libs/shared/secrets/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
