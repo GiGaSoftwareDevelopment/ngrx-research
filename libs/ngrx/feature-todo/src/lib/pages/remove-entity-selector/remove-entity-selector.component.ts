@@ -4,11 +4,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'ngrx-remove-entity-selector',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, MatInputModule, MatCardModule, MatButtonModule ],
+  imports: [ CommonModule, ReactiveFormsModule, MatInputModule, MatCardModule, MatButtonModule, MatTableModule ],
   templateUrl: './remove-entity-selector.component.html',
   styleUrls: [ './remove-entity-selector.component.scss' ],
   changeDetection: ChangeDetectionStrategy.OnPush

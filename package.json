@@ -31,7 +31,7 @@
     "@ngpat/date": "^16.5.11",
     "@ngpat/firebase": "^16.5.11",
     "@ngpat/fn": "^16.5.11",
-    "@ngpat/material": "^16.5.11",
+    "@ngpat/material": "^16.5.13",
     "@ngpat/rxjs": "^16.5.11",
     "@ngpat/schematics": "^16.5.11",
     "@ngpat/store": "^16.5.13",
