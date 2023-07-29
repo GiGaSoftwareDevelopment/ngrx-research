@@ -14,7 +14,20 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ngrx-research/ngrx/api": ["libs/ngrx/api-todo/src/index.ts"],
+      "@ngrx-research/ngrx/domain": ["libs/ngrx/domain/src/index.ts"],
+      "@ngrx-research/ngrx/feature-todo": [
+        "libs/ngrx/feature-todo/src/index.ts"
+      ],
+      "@ngrx-research/ngrx/ui-todo": ["libs/ngrx/ui-todo/src/index.ts"],
+      "@ngrx-research/ngrx/util-todo": ["libs/ngrx/util-todo/src/index.ts"],
+      "@ngrx-research/shared/domain": ["libs/shared/domain/src/index.ts"],
+      "@ngrx-research/shared/ui-common": ["libs/shared/ui-common/src/index.ts"],
+      "@ngrx-research/shared/ui-design-library": [
+        "libs/shared/ui-design-library/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

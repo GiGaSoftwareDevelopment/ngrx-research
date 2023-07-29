@@ -1,0 +1,34 @@
+{
+  "name": "ngrx-util-todo",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ngrx/util-todo/src",
+  "prefix": "todo",
+  "tags": ["domain:ngrx", "type:util"],
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/ngrx/util-todo/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/ngrx/util-todo/**/*.ts",
+          "libs/ngrx/util-todo/**/*.html"
+        ]
+      }
+    }
+  }
+}
