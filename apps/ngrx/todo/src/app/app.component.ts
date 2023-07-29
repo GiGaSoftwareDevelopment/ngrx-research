@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
+  imports: [ RouterModule, MatSidenavModule ],
   selector: 'ngrx-research-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
