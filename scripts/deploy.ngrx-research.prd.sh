@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-npx nx build ngrx-research --configuration=production;
+npx nx build ngrx-todo --configuration=production;
 
 cd apps/firebase;
 firebase use ngrx-research;

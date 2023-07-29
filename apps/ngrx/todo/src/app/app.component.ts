@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   standalone: true,
@@ -10,5 +11,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+
+  get isIOS() {
+    return Capacitor.getPlatform() === 'ios';
+  }
+
   title = 'ngrx-todo';
 }

@@ -10,7 +10,7 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/ngrx/todo",
+        "outputPath": "apps/firebase/ngrx-research",
         "index": "apps/ngrx/todo/src/index.html",
         "main": "apps/ngrx/todo/src/main.ts",
         "polyfills": ["zone.js"],
