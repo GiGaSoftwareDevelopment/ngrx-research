@@ -4,7 +4,12 @@
   "license": "MIT",
   "scripts": {
     "storybook": "npx nx storybook storybook-storybook-app",
-    "secrets": "bash scripts/secrets.sh ngrx-research_secrets"
+    "secrets": "bash scripts/secrets.sh ngrx-research_secrets",
+    "d.todo.prd": "bash scripts/deploy.ngrx-research.prd.sh",
+    "ci": "yarn clean.cache && rm -rf node_modules && yarn install --pure-lockfile",
+    "clean.cache": "rm -rf .angular && rm -rf tmp && rm -rf node_modules/.cache && yarn cache clean",
+    "clean.installers": "npx clear-npx-cache && npm cache clean --force && yarn cache clean",
+    "update.install": "rm -rf node_modules && yarn install"
   },
   "private": true,
   "dependencies": {
