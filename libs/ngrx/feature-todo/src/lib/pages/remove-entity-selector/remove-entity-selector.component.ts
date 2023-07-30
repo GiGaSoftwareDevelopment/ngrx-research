@@ -7,7 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { createTodo, deleteTodo, selectAllTodos, Todo, TodoParams } from '@ngrx-research/ngrx/domain';
+import {
+  createTodo,
+  deleteTodo,
+  selectAllTodos,
+  selectNgPatDeletedEntities, selectTodoEntities,
+  Todo,
+  TodoParams
+} from '@ngrx-research/ngrx/domain';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { filter, map } from 'rxjs/operators';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,7 +45,7 @@ export function createTodoParams(todoForm: TodoForm): TodoParams {
   styleUrls: [ './remove-entity-selector.component.scss' ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RemoveEntitySelectorComponent {
+export class RemoveEntitySelectorComponent implements OnInit {
 
   destroyRef = inject(DestroyRef);
 
@@ -55,6 +62,25 @@ export class RemoveEntitySelectorComponent {
   });
 
   constructor(private store: Store) {
+  }
+
+  ngOnInit(): void {
+
+    this.store.select(selectNgPatDeletedEntities<Todo>(selectTodoEntities)).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((todos: Todo[]) => {
+      console.log('Deleted todos 1: ', todos);
+    });
+
+    this.store.select(selectNgPatDeletedEntities<Todo>(selectTodoEntities)).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((todos: Todo[]) => {
+      console.log('Deleted todos 2: ', todos);
+    });
+
+
+
+
   }
 
   addTodo() {
