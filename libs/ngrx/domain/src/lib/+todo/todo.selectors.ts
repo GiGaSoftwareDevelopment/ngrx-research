@@ -3,7 +3,6 @@ import * as TodoReducer from './todo.reducer';
 import { Dictionary } from '@ngrx/entity';
 import { Todo } from './todo.model';
 import { MemoizedSelector } from '@ngrx/store/src/selector';
-import { Result } from 'postcss';
 
 export const selectTodoState = createFeatureSelector<TodoReducer.TodoState>(
   TodoReducer.todosFeatureKey
@@ -20,32 +19,49 @@ export const selectTodoEntities = createSelector(
 export const selectTodoIds = createSelector(selectTodoState, selectIds);
 export const selectTodoTotal = createSelector(selectTodoState, selectTotal);
 
+// START
+export const selectCurrentTodoId = createSelector(
+  selectTodoState,
+  (state: TodoReducer.TodoState) => state.selectedTodoId
+);
+
+
+export const selectCurrentTodo = createSelector(
+  selectTodoEntities,
+  selectCurrentTodoId,
+  (entities, todoId) => todoId && entities[todoId]
+);
+
+// END
+
 export const selectTodoLoadingInProgress = createSelector(
   selectTodoState,
   (state: TodoReducer.TodoState) => state.isLoading
 );
 
-export const selectNgPatDeletedEntities = <T>(entitySelector: MemoizedSelector<any, any>) => {
+export const selectDeletedTodos = () => {
 
-  let previousEntities: Dictionary<T> = {}
+  let currentEntities: Dictionary<Todo> = {}
 
   return createSelector(
-    entitySelector,
-    (entities: Dictionary<T>): T[] => {
+    selectTodoEntities,
+    (entities: Dictionary<Todo>): Todo[] => {
 
-      const remainingEntities = Object.keys(previousEntities)
-        .reduce((result: { [key: string]: T }, key: string) => {
-          if (!entities[key] && previousEntities[key]) {
-            result[key] = <T>previousEntities[key];
+      const deletedEntities = Object.keys(currentEntities)
+        .reduce((result: { [key: string]: Todo }, key: string) => {
+          if (!entities[key] && currentEntities[key]) {
+            result[key] = <Todo>currentEntities[key];
           }
           return result;
         }, {});
 
-      previousEntities = {
+      currentEntities = {
         ...entities
       };
 
-      return Object.values(remainingEntities);
+      return Object.values(deletedEntities
+      );
     }
   );
 }
+

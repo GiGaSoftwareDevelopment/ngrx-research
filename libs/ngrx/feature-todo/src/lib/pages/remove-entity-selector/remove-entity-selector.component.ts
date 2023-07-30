@@ -11,12 +11,12 @@ import {
   createTodo,
   deleteTodo,
   selectAllTodos,
-  selectNgPatDeletedEntities, selectTodoEntities,
+  selectDeletedTodos,
+  selectTodoEntities,
   Todo,
   TodoParams
 } from '@ngrx-research/ngrx/domain';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { filter, map } from 'rxjs/operators';
 import { MatIconModule } from '@angular/material/icon';
 
 interface TodoForm {
@@ -45,11 +45,12 @@ export function createTodoParams(todoForm: TodoForm): TodoParams {
   styleUrls: [ './remove-entity-selector.component.scss' ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RemoveEntitySelectorComponent implements OnInit {
+export class RemoveEntitySelectorComponent {
 
   destroyRef = inject(DestroyRef);
 
-  displayedColumns: string[] = [ 'id', 'title', 'description', 'isComplete', 'delete' ];
+  selectedDisplayedColumns: string[] = [ 'id', 'title', 'description', 'isComplete', 'delete' ];
+  deletedDisplayedColumns: string[] = [ 'id', 'title', 'description', 'isComplete'];
 
   todoForm = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -61,26 +62,11 @@ export class RemoveEntitySelectorComponent implements OnInit {
     initialValue: []
   });
 
+  deletedTodos: Signal<Todo[]> = toSignal(this.store.select(selectDeletedTodos()), {
+    initialValue: []
+  });
+
   constructor(private store: Store) {
-  }
-
-  ngOnInit(): void {
-
-    this.store.select(selectNgPatDeletedEntities<Todo>(selectTodoEntities)).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe((todos: Todo[]) => {
-      console.log('Deleted todos 1: ', todos);
-    });
-
-    this.store.select(selectNgPatDeletedEntities<Todo>(selectTodoEntities)).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe((todos: Todo[]) => {
-      console.log('Deleted todos 2: ', todos);
-    });
-
-
-
-
   }
 
   addTodo() {

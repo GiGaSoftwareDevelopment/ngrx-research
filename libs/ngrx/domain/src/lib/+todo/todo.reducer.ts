@@ -1,6 +1,6 @@
-import {Action, createReducer, on} from '@ngrx/store';
-import {EntityState, EntityAdapter, createEntityAdapter} from '@ngrx/entity';
-import {Todo} from './todo.model';
+import { createReducer, on } from '@ngrx/store';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Todo } from './todo.model';
 import * as TodoActions from './todo.actions';
 
 export const todosFeatureKey = 'todos';
@@ -12,28 +12,31 @@ export function selectTodoId(a: Todo): string {
 
 export interface TodoState extends EntityState<Todo> {
   // additional entities state properties
-   isLoaded: boolean;
-   isLoading: boolean;
-   error: string | null;
+  selectedTodoId: string | null;
+  isLoaded: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 
 export const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({
-   selectId: selectTodoId,
+  selectId: selectTodoId
 });
 
 export const initialTodoState: TodoState = todoAdapter.getInitialState({
   // additional entity state properties
-    isLoaded: false,
-    isLoading: true,
-    error: null,
+  selectedTodoId: null,
+  isLoaded: false,
+  isLoading: true,
+  error: null
 });
 
 export const todoReducer = createReducer(
   initialTodoState,
+  on(TodoActions.selectTodo, (state, { id }) => { return { ...state, selectedTodoId: id } }),
   on(TodoActions.addTodo, (state, { todo }) => todoAdapter.addOne(todo, state)),
   on(TodoActions.setTodo, (state, { todo }) => {
-      return todoAdapter.setOne(todo, state)
+    return todoAdapter.setOne(todo, state)
   }),
   on(TodoActions.upsertTodo, (state, { todo }) => todoAdapter.upsertOne(todo, state)),
   on(TodoActions.addTodos, (state, { todos }) => todoAdapter.addMany(todos, state)),
@@ -49,13 +52,13 @@ export const todoReducer = createReducer(
   on(TodoActions.deleteTodo, (state, { id }) => todoAdapter.removeOne(id, { ...state, error: null })),
   on(TodoActions.deleteTodos, (state, { ids }) => todoAdapter.removeMany(ids, state)),
   on(TodoActions.loadTodos, (state, { todos }) =>
-                                                            todoAdapter.setAll(todos, { ...state, isLoaded: true, isLoading: false })
-                                                        ),
+    todoAdapter.setAll(todos, { ...state, isLoaded: true, isLoading: false })
+  ),
   on(TodoActions.setTodos, (state, { todos }) => {
     return todoAdapter.setMany(todos, state);
   }),
   on(TodoActions.clearTodos, state => todoAdapter.removeAll({ ...state, isLoaded: false })),
-  on(TodoActions.todoError, (state, { message }) => ({ ...state, error: message })),
+  on(TodoActions.todoError, (state, { message }) => ({ ...state, error: message }))
   // on(loadApis, (state) => ({ ...state, isLoading: true }))
 );
 

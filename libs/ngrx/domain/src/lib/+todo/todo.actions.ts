@@ -5,6 +5,10 @@ import { Todo, TodoParams } from './todo.model';
 
 export const onInitTodoEffect = createAction('[Todo/API] Initial Query Todos');
 
+export const selectTodo = createAction(
+  '[Todo/API] Select Todo',
+  props<{id: string}>()
+);
 export const createTodo = createAction(
   '[Todo/API] Create Todo',
   props<{todo: TodoParams}>()
