@@ -14,13 +14,57 @@
         <input matInput placeholder="Title" formControlName="description">
         <mat-error *ngIf="todoForm.get('description')?.hasError('required')">Required</mat-error>
       </mat-form-field>
+
+      <div>
+        <mat-checkbox formControlName="isComplete">Is complete</mat-checkbox>
+      </div>
     </form>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-flat-button color="primary" [disabled]="todoForm.invalid || todoForm.pristine">Add Todo</button>
+    <button mat-flat-button color="primary"
+            [disabled]="todoForm.invalid || todoForm.pristine"
+            (click)="addTodo()" >Add Todo</button>
   </mat-card-actions>
+
+
 </mat-card>
 
-<mat-table>
+<table mat-table [dataSource]="todos()" class="mt-12">
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let todo" class="text-ellipsis"> {{todo.id}} </td>
+  </ng-container>
 
-</mat-table>
+  <!-- Title Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef> Title </th>
+    <td mat-cell *matCellDef="let todo"> {{todo.title}} </td>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let todo"> {{todo.description}} </td>
+  </ng-container>
+
+  <!-- isComplete Column -->
+  <ng-container matColumnDef="isComplete">
+    <th mat-header-cell *matHeaderCellDef> Is Complete </th>
+    <td mat-cell *matCellDef="let todo"> {{todo.isComplete}} </td>
+  </ng-container>
+
+  <!-- delete Column -->
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Delete </th>
+    <td mat-cell *matCellDef="let todo">
+      <button mat-icon-button color="warn" (click)="deleteTodo(todo)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>

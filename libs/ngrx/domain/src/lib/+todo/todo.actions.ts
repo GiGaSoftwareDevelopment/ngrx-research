@@ -1,9 +1,14 @@
 import {createAction, props} from '@ngrx/store';
 import {EntityMap, EntityMapOne, Update} from '@ngrx/entity';
 
-import {Todo} from './todo.model';
+import { Todo, TodoParams } from './todo.model';
 
 export const onInitTodoEffect = createAction('[Todo/API] Initial Query Todos');
+
+export const createTodo = createAction(
+  '[Todo/API] Create Todo',
+  props<{todo: TodoParams}>()
+);
 
 export const todoError = createAction(
   '[Todo/API] Error',
