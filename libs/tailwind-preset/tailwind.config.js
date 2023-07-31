@@ -1,6 +1,6 @@
 const {
   colors
-} = require('@ngpat/material/tailwind/src/tailwind.config.cjs');
+} = require('@ngpat/material/tailwind.config');
 
 /**
  * See https://github.com/tailwindlabs/tailwindcss/issues/1232#issuecomment-1111937404
