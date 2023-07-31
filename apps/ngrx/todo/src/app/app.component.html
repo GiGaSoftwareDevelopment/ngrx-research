@@ -5,7 +5,7 @@
     (openedChange)="sideNavSvc.setIsOpen($event)">
     <ng-pat-sidenav-menu [menuID]="menuID" [sidenavData]="sidenavData">
       <ng-pat-sidenav-header [height]="49">
-        <img src="assets/ngrx.svg" ngPatLogo />
+        <img src="assets/ngrx.svg" ngPatLogo/>
         <span ngPatTitle>NgRx Research</span>
       </ng-pat-sidenav-header>
     </ng-pat-sidenav-menu>
@@ -16,7 +16,9 @@
         <mat-icon>menu</mat-icon>
       </button>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div class="h-full overflow-y-scroll scroll-smooth">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 
 </mat-sidenav-container>

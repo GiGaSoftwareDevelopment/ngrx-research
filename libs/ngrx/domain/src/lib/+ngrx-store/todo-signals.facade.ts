@@ -15,16 +15,12 @@ export class TodoSignalsFacade {
   /**
    * NgRx store as a Signal
    */
-  todos: Signal<Todo[]> = toSignal(this.store.select(selectAllTodos), {
-    initialValue: []
-  });
+  todos: Signal<Todo[]> = this.store.selectSignal(selectAllTodos);
 
   /**
    * NgRx store as a Signal
    */
-  deletedTodos: Signal<Todo[]> = toSignal(this.store.select(selectDeletedTodos()), {
-    initialValue: []
-  });
+  deletedTodos: Signal<Todo[]> = this.store.selectSignal(selectDeletedTodos());
 
     constructor(private store: Store) { }
 
