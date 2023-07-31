@@ -20,19 +20,24 @@ export class AppComponent {
 
   sidenavData: NgPatSidenavData = {
     home: {
-      title: 'Deleted Selector',
+      title: 'Home',
       route: [ '/' ],
       icon: 'home'
     },
     currentTitle: 'Shortcuts',
-    menuTitle: '',
+    menuTitle: 'Research',
     menuGroupItems: [
       {
         title: 'NgRx',
         items: [
           {
+            title: 'NgRx Entity with Signals',
+            route: [ 'ngrx-entity-with-signals' ],
+            icon: 'table_rows'
+          },
+          {
             route: [ 'signal-entity-store' ],
-            title: 'Component Store',
+            title: 'Signal Entity Store',
             icon: 'storage'
           }
         ]
