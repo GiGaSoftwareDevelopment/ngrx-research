@@ -1,4 +1,4 @@
-
+@use "ngpat-material" as ngpat;
 
 :host {
   mat-sidenav-content {
@@ -7,7 +7,7 @@
     flex-direction: column;
     height: 100vh;
 
-    //transition: margin-left ngpat.$swift-ease-in-duration
-    //ngpat.$fast-out-slow-in-timing-function;
+    transition: margin-left ngpat.$swift-ease-in-duration
+    ngpat.$fast-out-slow-in-timing-function;
   }
 }

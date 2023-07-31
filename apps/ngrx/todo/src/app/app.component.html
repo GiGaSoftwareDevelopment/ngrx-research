@@ -1,5 +1,21 @@
 <mat-sidenav-container>
-  <mat-sidenav-content>
+  <mat-sidenav
+    [mode]="mode()"
+    [opened]="opened()"
+    (openedChange)="sideNavSvc.setIsOpen($event)">
+    <ng-pat-sidenav-menu [menuID]="menuID" [sidenavData]="sidenavData">
+      <ng-pat-sidenav-header [height]="49">
+        <img src="assets/ngrx.svg" ngPatLogo />
+        <span ngPatTitle>NgRx Research</span>
+      </ng-pat-sidenav-header>
+    </ng-pat-sidenav-menu>
+  </mat-sidenav>
+  <mat-sidenav-content [style.margin-left.px]="expandedWidth()">
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="sideNavSvc.toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 

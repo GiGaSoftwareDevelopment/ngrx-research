@@ -1,7 +1,6 @@
-<h1>Remove Entity Selector</h1>
+<h1>Signals Entity Store</h1>
 <p>
-  From and NgRX entity store, create a selector that tracks which entities have been removed. This
-  is used for post processing of the data after it has been removed from the store.
+  Use signals to track the most recent entities removed from the store.
 </p>
 <p>
   Only the most recent entities removed should be tracked upon subscription of the selector.
@@ -37,7 +36,7 @@
 </mat-card>
 
 <h1 class="mat-h1 !mt-12">Added Todos</h1>
-<table mat-table [dataSource]="todoSignalsFacade.todos()" >
+<table mat-table [dataSource]="store.selectAll()" >
   <!-- ID Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -79,7 +78,7 @@
 
 
 <h1 class="mat-h1 !mt-12">Deleted Todos</h1>
-<table mat-table [dataSource]="todoSignalsFacade.deletedTodos()">
+<table mat-table [dataSource]="store.deletedEntities()">
   <!-- ID Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> ID </th>

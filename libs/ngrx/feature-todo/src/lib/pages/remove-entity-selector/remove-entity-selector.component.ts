@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -6,36 +6,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   createTodo,
-  deleteTodo,
+  deleteTodo, isTodoForm,
   selectAllTodos,
   selectDeletedTodos,
-  selectTodoEntities,
-  Todo,
-  TodoParams
+  Todo, TodoForm,
+  TodoParams, TodoSignalsFacade
 } from '@ngrx-research/ngrx/domain';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 
-interface TodoForm {
-  title?: string | null | undefined
-  description?: string | null | undefined;
-  isComplete?: boolean | null | undefined;
-}
 
-export function isTodoForm(todoForm: TodoForm): boolean {
-  return todoForm.title !== undefined && todoForm.description !== undefined && todoForm.isComplete !== undefined;
-}
-
-export function createTodoParams(todoForm: TodoForm): TodoParams {
-  return {
-    title: todoForm.title!,
-    description: todoForm.description!,
-    isComplete: todoForm.isComplete!
-  };
-}
 
 @Component({
   selector: 'ngrx-remove-entity-selector',
@@ -47,7 +30,6 @@ export function createTodoParams(todoForm: TodoForm): TodoParams {
 })
 export class RemoveEntitySelectorComponent {
 
-  destroyRef = inject(DestroyRef);
 
   selectedDisplayedColumns: string[] = [ 'id', 'title', 'description', 'isComplete', 'delete' ];
   deletedDisplayedColumns: string[] = [ 'id', 'title', 'description', 'isComplete'];
@@ -58,28 +40,16 @@ export class RemoveEntitySelectorComponent {
     isComplete: new FormControl(false)
   });
 
-  todos: Signal<Todo[]> = toSignal(this.store.select(selectAllTodos), {
-    initialValue: []
-  });
-
-  deletedTodos: Signal<Todo[]> = toSignal(this.store.select(selectDeletedTodos()), {
-    initialValue: []
-  });
-
-  constructor(private store: Store) {
+  constructor(public todoSignalsFacade: TodoSignalsFacade) {
   }
 
   addTodo() {
     if (this.todoForm.dirty && this.todoForm.valid && isTodoForm(this.todoForm.value)) {
-      this.store.dispatch(createTodo({
-        todo: createTodoParams(this.todoForm.value)
-      }))
+     this.todoSignalsFacade.addTodo(this.todoForm.value);
     }
   }
 
   deleteTodo(todo: Todo) {
-    this.store.dispatch(deleteTodo({
-      id: todo.id
-    }));
+    this.todoSignalsFacade.deleteTodo(todo);
   }
 }

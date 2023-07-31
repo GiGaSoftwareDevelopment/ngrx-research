@@ -14,6 +14,12 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient } from '@angular/common/http';
+import {
+  localStorageReducer,
+  NG_PAT_LOCAL_STORAGE_CONFIGURATION,
+  ngPatIInitialLocalStorageState,
+  ngPatLocalStoragesFeatureKey
+} from '@ngpat/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,13 +28,23 @@ export const appConfig: ApplicationConfig = {
       provide: TODO_ENVIRONMENT,
       useValue: environment
     },
+    {
+      provide: NG_PAT_LOCAL_STORAGE_CONFIGURATION,
+      useValue: {
+        enableEncryption: true,
+        encryptionKey: 'foo', // for demo only
+        excludeKeys: []
+      },
+    },
     provideAnimations(),
     provideStore({
-        [todosFeatureKey]: todoReducer
+        [todosFeatureKey]: todoReducer,
+        [ngPatLocalStoragesFeatureKey]: localStorageReducer,
       },
       {
         initialState: {
-          [todosFeatureKey]: initialTodoState
+          [todosFeatureKey]: initialTodoState,
+          [ngPatLocalStoragesFeatureKey]: ngPatIInitialLocalStorageState,
         },
         runtimeChecks: {
           strictStateImmutability: true,

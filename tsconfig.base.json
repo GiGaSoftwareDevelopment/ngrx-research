@@ -23,6 +23,9 @@
       "@ngrx-research/ngrx/feature-todo/ngrx-entity-selector-routes": [
         "libs/ngrx/feature-todo/src/lib/pages/remove-entity-selector/remove-entity-selector.route.ts"
       ],
+      "@ngrx-research/ngrx/feature-todo/signal-entity-store": [
+        "libs/ngrx/feature-todo/src/lib/pages/signal-entity-stpre/signal-entity-store.route.ts"
+      ],
       "@ngrx-research/ngrx/ui-todo": ["libs/ngrx/ui-todo/src/index.ts"],
       "@ngrx-research/ngrx/util-todo": ["libs/ngrx/util-todo/src/index.ts"],
       "@ngrx-research/shared/domain": ["libs/shared/domain/src/index.ts"],
