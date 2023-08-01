@@ -1,7 +1,6 @@
 import { computed, signal, Signal, WritableSignal } from '@angular/core';
 import { createEntityAdapter, Dictionary, EntityAdapter, EntityMap, EntityMapOne, EntityState } from '@ngrx/entity';
 import { Comparer, IdSelector, Update } from '@ngrx/entity/src/models';
-import { Todo } from '../+ngrx-store';
 
 
 export interface DefaultSignalsParams {
@@ -179,5 +178,45 @@ export class SignalsEntityStore<T> {
 
   error(error: any): void {
     this.state.set({ ...this.state(), error });
+  }
+
+  next(): void {
+    const selectedId: string | number | null = this.state().selectedId;
+    const ids: string[] | number[] = this.state().ids;
+    if (ids.length > 0) {
+      if (selectedId !== null && selectedId !== undefined) {
+        const index = ids.findIndex((i: string | number) => i === selectedId);
+        if (index !== -1) {
+          const nextIndex = index + 1;
+          if (nextIndex < ids.length) {
+            this.selectId(ids[nextIndex]);
+          } else {
+            this.selectId(ids[0]);
+          }
+        }
+      } else {
+        this.selectId(ids[0]);
+      }
+    }
+  }
+
+  previous(): void {
+    const selectedId: string | number | null = this.state().selectedId;
+    const ids: string[] | number[] = this.state().ids;
+    if (ids.length > 0) {
+      if (selectedId !== null && selectedId !== undefined) {
+        const index = ids.findIndex((i: string | number) => i === selectedId);
+        if (index !== -1) {
+          const previousIndex = index - 1;
+          if (previousIndex >= 0) {
+            this.selectId(ids[previousIndex]);
+          } else {
+            this.selectId(ids[ids.length - 1]);
+          }
+        }
+      } else {
+        this.selectId(ids[ids.length - 1]);
+      }
+    }
   }
 }
