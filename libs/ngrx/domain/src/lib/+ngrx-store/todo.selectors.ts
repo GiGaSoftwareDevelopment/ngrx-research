@@ -1,8 +1,7 @@
-import { createFeatureSelector, createSelector, State } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as TodoReducer from './todo.reducer';
 import { Dictionary } from '@ngrx/entity';
 import { Todo } from './todo.model';
-import { MemoizedSelector } from '@ngrx/store/src/selector';
 
 export const selectTodoState = createFeatureSelector<TodoReducer.TodoState>(
   TodoReducer.todosFeatureKey
@@ -22,14 +21,19 @@ export const selectTodoTotal = createSelector(selectTodoState, selectTotal);
 // START
 export const selectCurrentTodoId = createSelector(
   selectTodoState,
-  (state: TodoReducer.TodoState) => state.selectedTodoId
+  (state: TodoReducer.TodoState) => state.selectedId
 );
 
 
 export const selectCurrentTodo = createSelector(
   selectTodoEntities,
   selectCurrentTodoId,
-  (entities, todoId) => todoId && entities[todoId]
+  (entities, todoId): Todo | null => {
+    if (todoId && entities[todoId] !== undefined && entities[todoId] !== null) {
+      return <Todo>entities[todoId]
+    }
+    return null;
+  }
 );
 
 // END
@@ -64,4 +68,46 @@ export const selectDeletedTodos = () => {
     }
   );
 }
+
+export const selectTodoError = createSelector(
+  selectTodoState,
+  (state: TodoReducer.TodoState) => state.error
+);
+
+export const selectTodoLoaded = createSelector(
+  selectTodoState,
+  (state: TodoReducer.TodoState) => state.isLoaded
+);
+
+export const selectTodoLoading = createSelector(
+  selectTodoState,
+  (state: TodoReducer.TodoState) => state.isLoading
+);
+
+
+export const selectIsFirstTodoSelected = createSelector(
+  selectTodoIds,
+  selectCurrentTodoId,
+  (ids, currentId) => {
+    if (ids.length > 0 && currentId) {
+      return ids[0] === currentId;
+    }
+
+    //
+    return true;
+  }
+);
+
+export const selectIsLastTodoSelected = createSelector(
+  selectTodoIds,
+  selectCurrentTodoId,
+  (ids, currentId) => {
+    if (ids.length > 0 && currentId) {
+      return ids[ids.length - 1] === currentId;
+    }
+
+    // Used for disabling the next button
+    // if there are no todos or the last todo is selected
+    return true;
+  });
 

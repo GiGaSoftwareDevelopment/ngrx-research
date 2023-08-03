@@ -22,6 +22,18 @@ export class TodoEffects implements OnInitEffects {
     )
   );
 
+  queryTodoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.queryTodo),
+      switchMap(() =>
+        this.todoService.getTodos().pipe(
+          map((todos: Todo[]) => TodoActions.loadTodos({ todos })),
+          catchError((message: string) => of(TodoActions.todoError({ message })))
+        )
+      )
+    )
+  );
+
   createTodo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoActions.createTodo),

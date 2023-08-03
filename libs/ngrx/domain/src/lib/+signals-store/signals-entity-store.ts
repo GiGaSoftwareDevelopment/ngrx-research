@@ -25,6 +25,45 @@ export interface SignalEntityOptions<T> {
   sortComparer?: false | Comparer<T>;
 }
 
+function selectFirstIdIfNoIdSelected<T>(state: EntityState<T> & DefaultSignalsParams): EntityState<T> & DefaultSignalsParams {
+  if (state.selectedId !== null && state.selectedId !== undefined) {
+    return state;
+  }
+  const firstId: string | number | undefined = state.ids[0];
+  if (firstId !== undefined) {
+    return { ...state, selectedId: firstId };
+  }
+  return state;
+}
+
+function selectPreviousIdIfCurrentDeleted<T>(state: EntityState<T> & DefaultSignalsParams, deletedIds: string[] | number[]): EntityState<T> & DefaultSignalsParams {
+  const selectedId: string | number | null = state.selectedId;
+  if (selectedId !== null && selectedId !== undefined && state.ids.length > 0) {
+
+    // .indexOf types only work with string[]
+    const deletedIdsContainSelectedId: boolean = (<string[]>deletedIds).indexOf(<string>selectedId) > -1;
+
+    if (!deletedIdsContainSelectedId) {
+      return state;
+    }
+
+    // .indexOf types only work with string[]
+    const previousId: string | number | never = state.ids[(<string[]>state.ids).indexOf(<string>selectedId) - 1];
+    const nextId: string | number | never = state.ids[(<string[]>state.ids).indexOf(<string>selectedId) + 1];
+
+    if (previousId !== undefined) {
+      return { ...state, selectedId: previousId };
+    } else if (nextId !== undefined) {
+      return { ...state, selectedId: nextId };
+    } else {
+      return { ...state, selectedId: null };
+    }
+  }
+
+  return state;
+}
+
+
 export class SignalsEntityStore<T> {
 
 
@@ -37,6 +76,8 @@ export class SignalsEntityStore<T> {
   readonly selectTotal: Signal<number>;
   readonly selectedId: Signal<string | number | null>;
   readonly selectedEntity: Signal<T | null>;
+  readonly selectIsFirstEntitySelected: Signal<boolean>;
+  readonly selectIsLastEntitySelected: Signal<boolean>;
 
   constructor(options?: SignalEntityOptions<T>) {
     const _options = {};
@@ -85,6 +126,28 @@ export class SignalsEntityStore<T> {
 
 
     });
+
+    this.selectIsFirstEntitySelected = computed(() => {
+      const selectIds: string[] | number[] = this.selectIds();
+      const selectedId: string | number | null = this.selectedId();
+
+      if (selectedId !== undefined && selectedId !== null && selectIds[0] !== undefined) {
+        return selectedId === selectIds[0];
+      }
+
+      return true;
+    });
+
+    this.selectIsLastEntitySelected = computed(() => {
+      const selectIds: string[] | number[] = this.selectIds();
+      const selectedId: string | number | null = this.selectedId();
+
+      if (selectedId !== undefined && selectedId !== null && selectIds[selectIds.length - 1] !== undefined) {
+        return selectedId === selectIds[selectIds.length - 1];
+      }
+
+      return true;
+    });
   }
 
   private memoizedCurrentEntities: Dictionary<T> = {};
@@ -121,23 +184,23 @@ export class SignalsEntityStore<T> {
   }
 
   addOne(entity: T): void {
-    this.state.set(this.adapter.addOne(entity, this.state()));
+    this.state.set(selectFirstIdIfNoIdSelected(this.adapter.addOne(entity, this.state())));
   }
 
   setOne(entity: T): void {
-    this.state.set(this.adapter.setOne(entity, this.state()));
+    this.state.set(selectFirstIdIfNoIdSelected(this.adapter.setOne(entity, this.state())));
   }
 
   upsertOne(entity: T): void {
-    this.state.set(this.adapter.upsertOne(entity, this.state()));
+    this.state.set(selectFirstIdIfNoIdSelected(this.adapter.upsertOne(entity, this.state())));
   }
 
   addMany(entities: T[]): void {
-    this.state.set(this.adapter.addMany(entities, this.state()));
+    this.state.set(selectFirstIdIfNoIdSelected(this.adapter.addMany(entities, this.state())));
   }
 
   upsertMany(entities: T[]): void {
-    this.state.set(this.adapter.upsertMany(entities, this.state()));
+    this.state.set(selectFirstIdIfNoIdSelected(this.adapter.upsertMany(entities, this.state())));
   }
 
   updateOne(update: Update<T>): void {
@@ -157,19 +220,20 @@ export class SignalsEntityStore<T> {
   }
 
   deleteOne(id: string): void {
-    this.state.set(this.adapter.removeOne(id, { ...this.state(), error: null }));
+    this.state.set(selectPreviousIdIfCurrentDeleted(this.adapter.removeOne(id, { ...this.state(), error: null }), [id]));
   }
 
   deleteMany(ids: string[]): void {
-    this.state.set(this.adapter.removeMany(ids, this.state()));
+    this.state.set(selectPreviousIdIfCurrentDeleted(this.adapter.removeMany(ids, this.state()), ids));
   }
 
   setAll(entities: T[]): void {
-    this.state.set(this.adapter.setAll(entities, { ...this.state(), isLoaded: true, isLoading: false, error: null }));
+    this.state.set(
+      selectFirstIdIfNoIdSelected(this.adapter.setAll(entities, { ...this.state(), isLoaded: true, isLoading: false, error: null })));
   }
 
   setMany(entities: T[]): void {
-    this.state.set(this.adapter.setMany(entities, this.state()));
+    this.state.set(selectFirstIdIfNoIdSelected(this.adapter.setMany(entities, this.state())));
   }
 
   clear(): void {
@@ -193,6 +257,8 @@ export class SignalsEntityStore<T> {
           } else {
             this.selectId(ids[0]);
           }
+        } else {
+          this.selectId(ids[0]);
         }
       } else {
         this.selectId(ids[0]);
@@ -213,10 +279,14 @@ export class SignalsEntityStore<T> {
           } else {
             this.selectId(ids[ids.length - 1]);
           }
+        } else {
+          this.selectId(ids[ids.length - 1]);
         }
       } else {
         this.selectId(ids[ids.length - 1]);
       }
     }
   }
+
+
 }

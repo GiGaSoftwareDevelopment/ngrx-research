@@ -29,8 +29,50 @@
             [disabled]="todoForm.invalid || todoForm.pristine"
             (click)="addTodo()" >Add Todo</button>
   </mat-card-actions>
+</mat-card>
 
+<mat-card class="mt-12">
+  <mat-card-header>
+    <mat-card-title>Select Todo</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="flex flex-row">
+      <button mat-flat-button
+              color="primary"
+              (click)="store.previous()"
+              [disabled]="store.selectIsFirstEntitySelected()">Previous</button>
+      <button mat-flat-button
+              class="ml-5"
+              color="primary"
+              (click)="store.next()"
+              [disabled]="store.selectIsLastEntitySelected()">Next</button>
+    </div>
 
+    <div class="mt-12">
+      {{ store.selectedEntity() | json }}
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-12">
+  <mat-card-header>
+    <mat-card-title>Select Todo Continuous</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="flex flex-row">
+      <button mat-flat-button
+              color="primary"
+              (click)="store.previous()">Previous</button>
+      <button mat-flat-button
+              class="ml-5"
+              color="primary"
+              (click)="store.next()">Next</button>
+    </div>
+
+    <div class="mt-12">
+      {{ store.selectedEntity() | json }}
+    </div>
+  </mat-card-content>
 </mat-card>
 
 <h1 class="mat-h1 !mt-12">Added Todos</h1>

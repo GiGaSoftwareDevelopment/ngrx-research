@@ -89,3 +89,8 @@ export const deleteTodos = createAction(
 );
 
 export const clearTodos = createAction('[Todo/API] Clear Todos');
+
+export const nextTodo = createAction('[Todo/API] Next Todo');
+
+export const previousTodo = createAction('[Todo/API] Previous Todo');
+

@@ -42,3 +42,17 @@ You have three options:
         ),
       EffectsModule.forRoot([TodoEffects]),
    ```
+
+4. Use the `TodoFacade` in your components or services.
+
+    ```typescript
+   
+    constructor(private todoFacade: TodoFacade) {}
+   ```
+
+
+   ```angular2html
+      <div *ngFor="let todo of todos">
+        {{ todo | json }}
+      </div>
+  ```
