@@ -20,6 +20,7 @@ import {
   ngPatIInitialLocalStorageState,
   ngPatLocalStoragesFeatureKey
 } from '@ngpat/store';
+import { NgPatLocalStorageEffects } from '@ngpat/store/lib/+local-storage/local-storage.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -56,7 +57,7 @@ export const appConfig: ApplicationConfig = {
         }
       }
     ),
-    provideEffects([ TodoEffects ]),
+    provideEffects([ TodoEffects, NgPatLocalStorageEffects ]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: environment.production
