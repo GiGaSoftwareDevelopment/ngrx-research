@@ -1,6 +1,15 @@
 import { computed, signal, Signal, WritableSignal } from '@angular/core';
-import { createEntityAdapter, Dictionary, EntityAdapter, EntityMap, EntityMapOne, EntityState } from '@ngrx/entity';
-import { Comparer, IdSelector, Update } from '@ngrx/entity/src/models';
+import {
+  Comparer,
+  createEntityAdapter,
+  Dictionary,
+  EntityAdapter,
+  EntityMap,
+  EntityMapOne,
+  EntityState,
+  IdSelector,
+  Update
+} from '@ngrx/entity';
 
 
 export interface DefaultSignalsParams {
@@ -220,7 +229,10 @@ export class SignalsEntityStore<T> {
   }
 
   deleteOne(id: string): void {
-    this.state.set(selectPreviousIdIfCurrentDeleted(this.adapter.removeOne(id, { ...this.state(), error: null }), [id]));
+    this.state.set(selectPreviousIdIfCurrentDeleted(this.adapter.removeOne(id, {
+      ...this.state(),
+      error: null
+    }), [ id ]));
   }
 
   deleteMany(ids: string[]): void {
@@ -229,7 +241,12 @@ export class SignalsEntityStore<T> {
 
   setAll(entities: T[]): void {
     this.state.set(
-      selectFirstIdIfNoIdSelected(this.adapter.setAll(entities, { ...this.state(), isLoaded: true, isLoading: false, error: null })));
+      selectFirstIdIfNoIdSelected(this.adapter.setAll(entities, {
+        ...this.state(),
+        isLoaded: true,
+        isLoading: false,
+        error: null
+      })));
   }
 
   setMany(entities: T[]): void {
