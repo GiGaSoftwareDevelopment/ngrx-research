@@ -39,7 +39,7 @@
     "@ngpat/material": "^16.5.14",
     "@ngpat/rxjs": "^16.5.11",
     "@ngpat/schematics": "^16.5.11",
-    "@ngpat/store": "^16.5.13",
+    "@ngpat/store": "^16.6.0",
     "@ngpat/utils": "^16.5.11",
     "@ngrx/component": "^16.1.0",
     "@ngrx/component-store": "^16.1.0",

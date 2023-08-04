@@ -20,7 +20,7 @@ import {
   ngPatIInitialLocalStorageState,
   ngPatLocalStoragesFeatureKey
 } from '@ngpat/store';
-import { NgPatLocalStorageEffects } from '@ngpat/store/lib/+local-storage/local-storage.effects';
+import { NgPatLocalStorageEffects } from '@ngpat/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
