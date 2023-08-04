@@ -15,12 +15,10 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient } from '@angular/common/http';
 import {
-  localStorageReducer,
-  NG_PAT_LOCAL_STORAGE_CONFIGURATION,
-  ngPatIInitialLocalStorageState,
-  ngPatLocalStoragesFeatureKey
+  NG_PAT_LOCAL_STORAGE_CONFIGURATION, provideLocalStorageEffects,
+  provideLocalStorageInitialState,
+  provideLocalStorageReducer
 } from '@ngpat/store';
-import { NgPatLocalStorageEffects } from '@ngpat/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -40,12 +38,12 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideStore({
         [todosFeatureKey]: todoReducer,
-        [ngPatLocalStoragesFeatureKey]: localStorageReducer,
+        ...provideLocalStorageReducer
       },
       {
         initialState: {
           [todosFeatureKey]: initialTodoState,
-          [ngPatLocalStoragesFeatureKey]: ngPatIInitialLocalStorageState,
+          ...provideLocalStorageInitialState
         },
         runtimeChecks: {
           strictStateImmutability: true,
@@ -57,7 +55,7 @@ export const appConfig: ApplicationConfig = {
         }
       }
     ),
-    provideEffects([ TodoEffects, NgPatLocalStorageEffects ]),
+    provideEffects([ TodoEffects, ...provideLocalStorageEffects ]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: environment.production

@@ -59,11 +59,6 @@ export class AppComponent {
 
   constructor(public sideNavFactory: NgPatSidenavMenuFactoryService) {
     this.sideNavSvc.init();
-
-    // this.sideNavSvc.expandedWidth$
-    //   .subscribe((width) => {
-    //     console.log('expandedWidth', width);
-    //   });
   }
 
   openSideNav() {
